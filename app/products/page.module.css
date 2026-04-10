@@ -3,21 +3,103 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  background: #fff;
 }
 
-/* Filters bar */
+/* Page header */
+.pageHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 28px 32px 20px;
+  background: #fff;
+}
+
+.pageHeaderLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pageTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.breadcrumbItem {
+  font-size: 13px;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.breadcrumbItem:hover {
+  color: var(--text-secondary);
+}
+
+.breadcrumbDot {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.breadcrumbActive {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Add product button */
+.addBtn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: #111827;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.addBtn:hover {
+  background: #1f2937;
+}
+
+/* ✅ Outer padded container — wraps filters + table + pagination */
+.tableSection {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin: 0 80px 80px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* Filters bar — sits inside the card */
 .filtersBar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 24px;
+  padding: 12px 20px;
   background: #fff;
   border-bottom: 1px solid var(--border);
   gap: 12px;
   flex-wrap: wrap;
-  position: sticky;
-  top: 0;
-  z-index: 10;
 }
 
 .filterLeft {
@@ -51,7 +133,7 @@
   cursor: pointer;
   outline: none;
   transition: border-color 0.15s;
-  min-width: 100px;
+  min-width: 110px;
 }
 
 .filterSelect:hover { border-color: var(--text-muted); }
@@ -87,7 +169,7 @@
   outline: none;
   font-size: 13px;
   color: var(--text-primary);
-  width: 160px;
+  width: 180px;
   background: transparent;
 }
 
@@ -98,18 +180,17 @@
   align-items: center;
   gap: 6px;
   padding: 7px 12px;
-  border: 1px solid var(--border);
+  border: none;
   border-radius: var(--radius-sm);
   font-size: 13px;
   font-weight: 500;
   color: var(--text-secondary);
-  background: #fff;
+  background: transparent;
   transition: all 0.15s;
   cursor: pointer;
 }
 
 .actionBtn:hover {
-  border-color: var(--text-muted);
   color: var(--text-primary);
   background: var(--bg);
 }
@@ -136,14 +217,44 @@
 }
 
 .table th {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   text-align: left;
-  padding: 12px 16px;
+  padding: 14px 16px;
   border-bottom: 1px solid var(--border);
   white-space: nowrap;
-  letter-spacing: 0.2px;
+}
+
+.thInner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.thSort {
+  color: #9ca3af;
+  flex-shrink: 0;
+}
+
+.thMenu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  margin-left: 2px;
+  transition: background 0.12s, color 0.12s;
+}
+
+.thMenu:hover {
+  background: #e5e7eb;
+  color: var(--text-primary);
 }
 
 .checkCol {
@@ -153,7 +264,7 @@
 
 .table td {
   padding: 14px 16px;
-  border-bottom: 1px solid #f5f6f7;
+  border-bottom: 1px solid #f0f2f4;
   font-size: 13px;
   color: var(--text-primary);
   vertical-align: middle;
@@ -175,7 +286,6 @@
   border-bottom-color: #dcfce7;
 }
 
-/* Checkbox */
 .checkbox {
   width: 16px;
   height: 16px;
@@ -184,16 +294,15 @@
   border-radius: 4px;
 }
 
-/* Product cell */
 .productCell {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .productThumb {
-  width: 52px;
-  height: 52px;
+  width: 56px;
+  height: 56px;
   border-radius: 10px;
   background: #f3f4f6;
   display: flex;
@@ -225,7 +334,6 @@
   color: var(--text-muted);
 }
 
-/* Date cell */
 .dateCell {
   display: flex;
   flex-direction: column;
@@ -243,12 +351,11 @@
   color: var(--text-muted);
 }
 
-/* Stock cell */
 .stockCell {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  min-width: 120px;
+  min-width: 130px;
 }
 
 .stockBar {
@@ -270,18 +377,16 @@
   font-weight: 500;
 }
 
-/* Price */
 .priceCell {
   font-size: 14px;
   font-weight: 600;
   color: var(--text-primary);
 }
 
-/* Publish badge */
 .publishBadge {
   display: inline-flex;
   align-items: center;
-  padding: 4px 12px;
+  padding: 4px 14px;
   border-radius: 6px;
   font-size: 12px;
   font-weight: 600;
@@ -290,8 +395,8 @@
 
 .publishedBadge {
   background: rgba(34,197,94,0.1);
-  color: var(--green-dark);
-  border-color: rgba(34,197,94,0.2);
+  color: #15803d;
+  border-color: rgba(34,197,94,0.25);
 }
 
 .draftBadge {
@@ -300,7 +405,6 @@
   border-color: var(--border);
 }
 
-/* More button */
 .moreBtn {
   color: var(--text-muted);
   padding: 6px;
@@ -308,6 +412,9 @@
   transition: color 0.15s, background 0.15s;
   display: flex;
   align-items: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 .moreBtn:hover {
@@ -315,13 +422,13 @@
   background: var(--bg);
 }
 
-/* Pagination */
+/* Pagination — sits inside the card */
 .pagination {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 16px;
-  padding: 12px 24px;
+  padding: 12px 20px;
   background: #fff;
   border-top: 1px solid var(--border);
 }
@@ -383,4 +490,145 @@
 .pageBtn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+/* ============================================
+   RESPONSIVE STYLES
+   ============================================ */
+
+/* Tablet — 768px and below */
+@media (max-width: 768px) {
+  .pageHeader {
+    padding: 20px 16px 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .pageTitle {
+    font-size: 20px;
+  }
+
+  .tableSection {
+    margin: 0 16px 20px;
+    border-radius: 10px;
+  }
+
+  .filtersBar {
+    padding: 10px 14px;
+    gap: 8px;
+  }
+
+  .filterLeft {
+    width: 100%;
+  }
+
+  .filterRight {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .searchInput {
+    width: 120px;
+  }
+
+  .actionBtn span {
+    display: none;
+  }
+
+  .pagination {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 14px;
+  }
+
+  .pageLabel {
+    display: none;
+  }
+
+  .pageRange {
+    min-width: auto;
+  }
+}
+
+/* Mobile — 480px and below */
+@media (max-width: 480px) {
+  .pageHeader {
+    padding: 16px 12px 12px;
+  }
+
+  .pageTitle {
+    font-size: 18px;
+  }
+
+  .addBtn {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  .tableSection {
+    margin: 0 12px 16px;
+    border-radius: 8px;
+  }
+
+  .filtersBar {
+    padding: 10px 12px;
+  }
+
+  .filterSelect {
+    min-width: 90px;
+    font-size: 12px;
+    padding: 6px 26px 6px 10px;
+  }
+
+  .searchInput {
+    width: 100px;
+  }
+
+  .searchWrap {
+    padding: 6px 10px;
+  }
+
+  .actionBtn {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+
+  .table th {
+    font-size: 12px;
+    padding: 12px 10px;
+  }
+
+  .table td {
+    padding: 12px 10px;
+    font-size: 12px;
+  }
+
+  .productThumb {
+    width: 40px;
+    height: 40px;
+  }
+
+  .productName {
+    font-size: 13px;
+  }
+
+  .checkCol {
+    width: 36px;
+    padding-left: 12px !important;
+  }
+
+  .priceCell {
+    font-size: 13px;
+  }
+
+  .publishBadge {
+    padding: 3px 8px;
+    font-size: 11px;
+  }
+
+  .stockCell {
+    min-width: 90px;
+  }
 }
