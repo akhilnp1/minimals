@@ -8,6 +8,8 @@
   flex-shrink: 0;
   position: sticky;
   top: 0;
+  z-index: 50;
+  overflow: visible;
 }
 
 .logoWrap {
@@ -19,11 +21,7 @@
   position: relative;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+.logo { display: flex; align-items: center; justify-content: center; }
 
 .collapseBtn {
   position: absolute;
@@ -43,7 +41,6 @@
   transition: color 0.15s;
   z-index: 10;
 }
-
 .collapseBtn:hover { color: var(--text-primary); }
 
 .nav {
@@ -52,7 +49,11 @@
   flex-direction: column;
   padding: 12px 0;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: visible;
+}
+
+.navItemWrap {
+  position: relative;
 }
 
 .navItem {
@@ -63,11 +64,11 @@
   gap: 4px;
   padding: 10px 8px;
   color: var(--text-secondary);
-  border-radius: 0;
   transition: color 0.15s, background 0.15s;
   position: relative;
   min-height: 56px;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .navItem:hover {
@@ -95,20 +96,68 @@
 
 .chevron {
   position: absolute;
-  right: 6px;
+  right: 5px;
   top: 10px;
-  opacity: 0.5;
+  opacity: 0.45;
 }
 
-.active {
+.active { color: var(--teal); }
+.active .icon { background: #e0f2f1; }
+.active .navLabel { color: var(--teal); font-weight: 600; }
+
+/* Submenu flyout */
+.submenu {
+  position: fixed;
+  left: 80px;
+  width: 160px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+  border: 1px solid var(--border);
+  padding: 6px;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-6px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.submenuOpen {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateX(4px);
+}
+
+.submenuTitle {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 6px 10px 8px;
+  border-bottom: 1px solid #f0f2f4;
+  margin-bottom: 4px;
+}
+
+.submenuItem {
+  display: block;
+  padding: 9px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.12s, color 0.12s;
+  cursor: pointer;
+}
+
+.submenuItem:hover {
+  background: #f0fdf4;
   color: var(--teal);
 }
 
-.active .icon {
+.submenuItemActive {
   background: #e0f2f1;
-}
-
-.active .navLabel {
   color: var(--teal);
   font-weight: 600;
 }
