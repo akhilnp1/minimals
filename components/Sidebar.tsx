@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState, useRef } from 'react';
 import styles from './Sidebar.module.css';
 
 const NAV = [
@@ -12,13 +13,37 @@ const NAV = [
   { label: 'File', href: '/file', icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> },
   { label: 'Course', href: '/course', icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> },
   { label: 'User', href: '/user', icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>, hasChevron: true },
-  { label: 'Product', href: '/products', icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>, hasChevron: true },
+  {
+    label: 'Product', href: '/products',
+    icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>,
+    hasChevron: true,
+    submenu: [
+      { label: 'List',    href: '/products' },
+      { label: 'Details', href: '/products/details' },
+      { label: 'Create',  href: '/products/create' },
+      { label: 'Edit',    href: '/products/edit' },
+    ],
+  },
   { label: 'Order', href: '/order', icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>, hasChevron: true },
   { label: '$', href: '/finance', icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>, hasChevron: true },
 ];
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
+  const [submenuTop, setSubmenuTop] = useState(0);
+  const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleMouseEnter = (label: string, e: React.MouseEvent<HTMLDivElement>) => {
+    if (hideTimer.current) clearTimeout(hideTimer.current);
+    const rect = e.currentTarget.getBoundingClientRect();
+    setSubmenuTop(rect.top);
+    setOpenSubmenu(label);
+  };
+
+  const handleMouseLeave = () => {
+    hideTimer.current = setTimeout(() => setOpenSubmenu(null), 120);
+  };
 
   return (
     <aside className={styles.sidebar}>
@@ -38,6 +63,44 @@ export default function Sidebar() {
       <nav className={styles.nav}>
         {NAV.map(item => {
           const active = pathname === item.href || (item.href !== '/home' && pathname.startsWith(item.href));
+          const submenuOpen = openSubmenu === item.label;
+
+          if (item.submenu) {
+            return (
+              <div
+                key={item.href}
+                className={styles.navItemWrap}
+                onMouseEnter={(e) => handleMouseEnter(item.label, e)}
+                onMouseLeave={handleMouseLeave}
+              >
+                <Link href={item.href} className={`${styles.navItem} ${active ? styles.active : ''}`}>
+                  <span className={styles.icon}>{item.icon}</span>
+                  <span className={styles.navLabel}>{item.label}</span>
+                  <svg className={styles.chevron} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M9 18l6-6-6-6"/></svg>
+                </Link>
+
+                <div
+                  className={`${styles.submenu} ${submenuOpen ? styles.submenuOpen : ''}`}
+                  style={{ top: submenuTop }}
+                  onMouseEnter={(e) => handleMouseEnter(item.label, e)}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <div className={styles.submenuTitle}>{item.label}</div>
+                  {item.submenu.map(sub => (
+                    <Link
+                      key={sub.href}
+                      href={sub.href}
+                      className={`${styles.submenuItem} ${pathname === sub.href ? styles.submenuItemActive : ''}`}
+                      onClick={() => setOpenSubmenu(null)}
+                    >
+                      {sub.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            );
+          }
+
           return (
             <Link key={item.href} href={item.href} className={`${styles.navItem} ${active ? styles.active : ''}`}>
               <span className={styles.icon}>{item.icon}</span>
